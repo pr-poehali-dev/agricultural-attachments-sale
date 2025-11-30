@@ -769,7 +769,7 @@ const Index = () => {
                     </div>
                     <div>
                       <p className="font-medium">Телефон</p>
-                      <p className="text-muted-foreground">+7 (495) 123-45-67</p>
+                      <p className="text-muted-foreground">+7 (999) 890-68-55</p>
                     </div>
                   </div>
 
@@ -789,7 +789,7 @@ const Index = () => {
                     </div>
                     <div>
                       <p className="font-medium">Адрес</p>
-                      <p className="text-muted-foreground">Московская обл., г. Подольск, ул. Производственная, 15</p>
+                      <p className="text-muted-foreground">Московская обл., г. Кашира, ул. Производственная, 15</p>
                     </div>
                   </div>
                 </CardContent>
