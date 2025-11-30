@@ -7,6 +7,7 @@ import { Slider } from "@/components/ui/slider";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import Icon from "@/components/ui/icon";
 
 const products = [
@@ -152,6 +153,8 @@ const Index = () => {
   const [selectedCompatibility, setSelectedCompatibility] = useState<string>("all");
   const [priceRange, setPriceRange] = useState<number[]>([0, 300000]);
   const [selectedProduct, setSelectedProduct] = useState<typeof products[0] | null>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
   const filteredProducts = products.filter((product) => {
     const categoryMatch = selectedCategory === "all" || product.category === selectedCategory;
@@ -167,13 +170,13 @@ const Index = () => {
       <header className="sticky top-0 z-50 bg-accent text-accent-foreground shadow-lg">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="bg-primary p-2 rounded-lg">
-                <Icon name="Truck" size={32} className="text-primary-foreground" />
+            <div className="flex items-center gap-2 md:gap-3">
+              <div className="bg-primary p-1.5 md:p-2 rounded-lg">
+                <Icon name="Truck" size={24} className="text-primary-foreground md:w-8 md:h-8" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold">АгроТехМаш</h1>
-                <p className="text-sm text-accent-foreground/80">Навесное оборудование</p>
+                <h1 className="text-lg md:text-2xl font-bold">АгроТехМаш</h1>
+                <p className="text-xs md:text-sm text-accent-foreground/80">Навесное оборудование</p>
               </div>
             </div>
             <nav className="hidden md:flex gap-6">
@@ -183,31 +186,97 @@ const Index = () => {
               <a href="#reviews" className="hover:text-primary transition-colors font-medium">Отзывы</a>
               <a href="#contacts" className="hover:text-primary transition-colors font-medium">Контакты</a>
             </nav>
-            <Button size="lg" className="hidden md:flex">
-              <Icon name="Phone" className="mr-2" size={20} />
-              Связаться
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button size="lg" className="hidden md:flex">
+                <Icon name="Phone" className="mr-2" size={20} />
+                Связаться
+              </Button>
+              <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+                <SheetTrigger asChild>
+                  <Button size="icon" variant="outline" className="md:hidden">
+                    <Icon name="Menu" size={24} />
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="right" className="w-[280px] sm:w-[350px]">
+                  <SheetHeader>
+                    <SheetTitle className="flex items-center gap-2">
+                      <Icon name="Truck" size={24} className="text-primary" />
+                      Меню
+                    </SheetTitle>
+                    <SheetDescription>Навигация по сайту</SheetDescription>
+                  </SheetHeader>
+                  <nav className="flex flex-col gap-4 mt-8">
+                    <a 
+                      href="#catalog" 
+                      className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted transition-colors"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      <Icon name="ShoppingBag" size={20} className="text-primary" />
+                      <span className="font-medium">Каталог</span>
+                    </a>
+                    <a 
+                      href="#about" 
+                      className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted transition-colors"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      <Icon name="Building" size={20} className="text-primary" />
+                      <span className="font-medium">О компании</span>
+                    </a>
+                    <a 
+                      href="#delivery" 
+                      className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted transition-colors"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      <Icon name="Truck" size={20} className="text-primary" />
+                      <span className="font-medium">Доставка</span>
+                    </a>
+                    <a 
+                      href="#reviews" 
+                      className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted transition-colors"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      <Icon name="MessageSquare" size={20} className="text-primary" />
+                      <span className="font-medium">Отзывы</span>
+                    </a>
+                    <a 
+                      href="#contacts" 
+                      className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted transition-colors"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      <Icon name="MapPin" size={20} className="text-primary" />
+                      <span className="font-medium">Контакты</span>
+                    </a>
+                    <div className="border-t pt-4 mt-4">
+                      <Button className="w-full" size="lg" onClick={() => setMobileMenuOpen(false)}>
+                        <Icon name="Phone" className="mr-2" size={20} />
+                        Связаться с нами
+                      </Button>
+                    </div>
+                  </nav>
+                </SheetContent>
+              </Sheet>
+            </div>
           </div>
         </div>
       </header>
 
-      <section className="bg-gradient-to-br from-primary/10 via-background to-secondary/10 py-20">
+      <section className="bg-gradient-to-br from-primary/10 via-background to-secondary/10 py-12 md:py-20">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <Badge className="mb-4 text-lg px-6 py-2">Прямые поставки от производителя</Badge>
-            <h2 className="text-5xl md:text-6xl font-bold mb-6">
+            <Badge className="mb-4 text-sm md:text-lg px-4 md:px-6 py-1.5 md:py-2">Прямые поставки от производителя</Badge>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6">
               Навесное оборудование для спецтехники
             </h2>
-            <p className="text-xl text-muted-foreground mb-8">
+            <p className="text-base md:text-xl text-muted-foreground mb-6 md:mb-8">
               Ковши, вилы, щетки, отвалы и другое оборудование для тракторов и погрузчиков. 
               Гарантия качества, доставка по всей России.
             </p>
-            <div className="flex flex-wrap gap-4 justify-center">
-              <Button size="lg" className="text-lg px-8">
+            <div className="flex flex-col sm:flex-row flex-wrap gap-3 md:gap-4 justify-center">
+              <Button size="lg" className="text-base md:text-lg px-6 md:px-8 w-full sm:w-auto">
                 <Icon name="ShoppingCart" className="mr-2" size={20} />
                 Смотреть каталог
               </Button>
-              <Button size="lg" variant="outline" className="text-lg px-8">
+              <Button size="lg" variant="outline" className="text-base md:text-lg px-6 md:px-8 w-full sm:w-auto">
                 <Icon name="Calculator" className="mr-2" size={20} />
                 Рассчитать стоимость
               </Button>
@@ -216,12 +285,12 @@ const Index = () => {
         </div>
       </section>
 
-      <section id="catalog" className="py-16 bg-muted/30">
+      <section id="catalog" className="py-12 md:py-16 bg-muted/30">
         <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold mb-12 text-center">Каталог оборудования</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-8 md:mb-12 text-center">Каталог оборудования</h2>
           
-          <div className="grid lg:grid-cols-4 gap-8">
-            <aside className="lg:col-span-1">
+          <div className="grid lg:grid-cols-4 gap-6 md:gap-8">
+            <aside className="lg:col-span-1 hidden lg:block">
               <Card className="sticky top-24">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
@@ -292,13 +361,94 @@ const Index = () => {
             </aside>
 
             <div className="lg:col-span-3">
-              <div className="mb-6 flex items-center justify-between">
-                <p className="text-muted-foreground">
+              <div className="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                <p className="text-sm md:text-base text-muted-foreground">
                   Найдено товаров: <span className="font-bold text-foreground">{filteredProducts.length}</span>
                 </p>
+                <Sheet open={mobileFiltersOpen} onOpenChange={setMobileFiltersOpen}>
+                  <SheetTrigger asChild>
+                    <Button variant="outline" className="lg:hidden w-full sm:w-auto">
+                      <Icon name="Filter" className="mr-2" size={20} />
+                      Фильтры
+                    </Button>
+                  </SheetTrigger>
+                  <SheetContent side="bottom" className="h-[85vh] overflow-y-auto">
+                    <SheetHeader>
+                      <SheetTitle>Фильтры</SheetTitle>
+                      <SheetDescription>Настройте параметры поиска</SheetDescription>
+                    </SheetHeader>
+                    <div className="space-y-6 mt-6">
+                      <div>
+                        <label className="text-sm font-medium mb-2 block">Тип оборудования</label>
+                        <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Все категории" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="all">Все категории</SelectItem>
+                            <SelectItem value="Ковши">Ковши</SelectItem>
+                            <SelectItem value="Вилы">Вилы</SelectItem>
+                            <SelectItem value="Щетки">Щетки</SelectItem>
+                            <SelectItem value="Отвалы">Отвалы</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div>
+                        <label className="text-sm font-medium mb-2 block">Совместимость с техникой</label>
+                        <Select value={selectedCompatibility} onValueChange={setSelectedCompatibility}>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Вся техника" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="all">Вся техника</SelectItem>
+                            {uniqueCompatibility.map((comp) => (
+                              <SelectItem key={comp} value={comp}>{comp}</SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div>
+                        <label className="text-sm font-medium mb-2 block">
+                          Цена: {priceRange[0].toLocaleString()} - {priceRange[1].toLocaleString()} ₽
+                        </label>
+                        <Slider
+                          value={priceRange}
+                          onValueChange={setPriceRange}
+                          min={0}
+                          max={300000}
+                          step={5000}
+                          className="mt-4"
+                        />
+                      </div>
+
+                      <div className="flex gap-3">
+                        <Button 
+                          variant="outline" 
+                          className="flex-1"
+                          onClick={() => {
+                            setSelectedCategory("all");
+                            setSelectedCompatibility("all");
+                            setPriceRange([0, 300000]);
+                          }}
+                        >
+                          <Icon name="X" className="mr-2" size={16} />
+                          Сбросить
+                        </Button>
+                        <Button 
+                          className="flex-1"
+                          onClick={() => setMobileFiltersOpen(false)}
+                        >
+                          Применить
+                        </Button>
+                      </div>
+                    </div>
+                  </SheetContent>
+                </Sheet>
               </div>
 
-              <div className="grid md:grid-cols-2 gap-6">
+              <div className="grid sm:grid-cols-2 gap-4 md:gap-6">
                 {filteredProducts.map((product) => (
                   <Card key={product.id} className="hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
                     <CardHeader className="p-0">
@@ -310,10 +460,10 @@ const Index = () => {
                         />
                       </div>
                     </CardHeader>
-                    <CardContent className="pt-6">
-                      <Badge className="mb-3">{product.category}</Badge>
-                      <CardTitle className="mb-2 text-xl">{product.name}</CardTitle>
-                      <CardDescription className="mb-4">{product.description}</CardDescription>
+                    <CardContent className="pt-4 md:pt-6">
+                      <Badge className="mb-2 md:mb-3 text-xs md:text-sm">{product.category}</Badge>
+                      <CardTitle className="mb-2 text-base md:text-xl">{product.name}</CardTitle>
+                      <CardDescription className="mb-3 md:mb-4 text-sm">{product.description}</CardDescription>
                       
                       <div className="space-y-2 text-sm mb-4">
                         <div className="flex items-center gap-2 text-muted-foreground">
@@ -334,15 +484,15 @@ const Index = () => {
                         ))}
                       </div>
                     </CardContent>
-                    <CardFooter className="flex items-center justify-between pt-0">
+                    <CardFooter className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pt-0">
                       <div>
-                        <p className="text-3xl font-bold text-primary">
+                        <p className="text-2xl md:text-3xl font-bold text-primary">
                           {product.price.toLocaleString()} ₽
                         </p>
                       </div>
                       <Dialog>
                         <DialogTrigger asChild>
-                          <Button onClick={() => setSelectedProduct(product)}>
+                          <Button onClick={() => setSelectedProduct(product)} className="w-full sm:w-auto" size="sm">
                             Подробнее
                             <Icon name="ArrowRight" className="ml-2" size={16} />
                           </Button>
@@ -440,11 +590,11 @@ const Index = () => {
         </div>
       </section>
 
-      <section id="about" className="py-16 bg-background">
+      <section id="about" className="py-12 md:py-16 bg-background">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-4xl font-bold mb-8 text-center">О компании</h2>
-            <div className="grid md:grid-cols-2 gap-8">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6 md:mb-8 text-center">О компании</h2>
+            <div className="grid sm:grid-cols-2 gap-4 md:gap-8">
               <Card>
                 <CardHeader>
                   <div className="bg-primary/10 p-3 rounded-lg w-fit mb-3">
@@ -501,10 +651,10 @@ const Index = () => {
         </div>
       </section>
 
-      <section id="delivery" className="py-16 bg-muted/30">
+      <section id="delivery" className="py-12 md:py-16 bg-muted/30">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-4xl font-bold mb-8 text-center">Доставка и оплата</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6 md:mb-8 text-center">Доставка и оплата</h2>
             
             <Accordion type="single" collapsible className="space-y-4">
               <AccordionItem value="item-1" className="bg-card rounded-lg px-6">
@@ -562,11 +712,11 @@ const Index = () => {
         </div>
       </section>
 
-      <section id="reviews" className="py-16 bg-background">
+      <section id="reviews" className="py-12 md:py-16 bg-background">
         <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold mb-12 text-center">Отзывы клиентов</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-8 md:mb-12 text-center">Отзывы клиентов</h2>
           
-          <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 max-w-6xl mx-auto">
             {reviews.map((review) => (
               <Card key={review.id} className="hover:shadow-lg transition-shadow">
                 <CardHeader>
@@ -601,12 +751,12 @@ const Index = () => {
         </div>
       </section>
 
-      <section id="contacts" className="py-16 bg-accent text-accent-foreground">
+      <section id="contacts" className="py-12 md:py-16 bg-accent text-accent-foreground">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-4xl font-bold mb-12 text-center">Контакты</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-8 md:mb-12 text-center">Контакты</h2>
             
-            <div className="grid md:grid-cols-2 gap-8">
+            <div className="grid md:grid-cols-2 gap-6 md:gap-8">
               <Card className="bg-card/90">
                 <CardHeader>
                   <CardTitle>Связаться с нами</CardTitle>
